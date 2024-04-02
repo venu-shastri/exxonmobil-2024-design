@@ -1,0 +1,56 @@
+class Program
+{
+    public delegate bool PredicteCommand(string item);
+    static void Main()
+    {
+        string[] cities = { "Blr", "Delhi", "Chennai", "Hyderabad","Buvenshwar" };
+
+        List<string> list = Program.Filter(cities, "B");
+        //Dump Result
+        for(int i=0;i<list.Count;i++)
+        {
+            Console.WriteLine(list[i]);
+        }
+        list = Program.Filter(cities, new PredicteCommand(Program.StartsWithB));
+        list = Program.Filter(cities, new PredicteCommand(Program.StartsWithC));
+
+
+
+    }
+
+    static List<string> Filter(string[] source,string startsWith)
+    {
+        List<string> list = new List<string>(); 
+        for(int i = 0; i < source.Length; i++)
+        {
+            if (source[i].StartsWith(startsWith))
+            {
+                list.Add(source[i]);
+            }
+        }
+        return list;
+
+    }
+
+    static bool StartsWithB(string item)
+    {
+        return item.StartsWith("B");
+    }
+    static bool StartsWithC(string item)
+    {
+        return item.StartsWith("C");
+    }
+    static List<string> Filter(string[] source, PredicteCommand predicateFn)
+    {
+        List<string> list = new List<string>();
+        for (int i = 0; i < source.Length; i++)
+        {
+            if (predicateFn.Invoke(source[i]))
+            {
+                list.Add(source[i]);
+            }
+        }
+        return list;
+
+    }
+}
